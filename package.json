@@ -5,8 +5,7 @@
   "main": ".eslintrc.js",
   "dependencies": {
     "express": "^4.16.2",
-    "mysql": "^2.15.0",
-    "sequelize": "^4.28.1"
+    "mongoose": "^4.13.7"
   },
   "devDependencies": {},
   "scripts": {
