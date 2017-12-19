@@ -5,9 +5,9 @@ var calculateTOD = (timestamp) => {
   var date = new Date(timestamp);
   var hour = date.getHours();
   if (hour >= 6 && hour < 18) {
-    return true;
+    return 1;
   }
-  return false;
+  return 0;
 };
 
 module.exports = calculateTOD;

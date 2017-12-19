@@ -5,6 +5,7 @@ config/staging.json
 config/test.json
 DBSEED.json
 elasticsearch-6.1.0/
+kibana-6.1.0-darwin-x86_64/
 
 # OS X
 .DS_Store

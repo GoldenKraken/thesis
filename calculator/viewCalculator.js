@@ -41,9 +41,8 @@
 */
 
 
-var calculateDuration = (instance) => {
+var calculateDuration = (events) => {
   var orderedInstance = [];
-  var events = instance.events;
   var i = 0;
   var orderEvents = () => {
     if (events.length === 0) {
@@ -59,7 +58,6 @@ var calculateDuration = (instance) => {
     orderEvents();
   };
   orderEvents();
-  console.log(orderedInstance);
   var duration = 0;
   var playOrPause = '';
   for (var k = 0; k < orderedInstance.length - 1; k++) {

@@ -35,12 +35,13 @@ app.get('/', (req, res) => {
 // post route for incoming event packages (route name pending consensus with Event service)
 app.post('/view', (req, res) => {
   var events = req.body.events;
+  var firstTimestamp = events[0].event_timestamp;
   var dbData = {
     viewInstanceId: events[0].viewInstanceId,
     videoId: events[0].videoId,
-    watchTimestamp: events[0].watchTimestamp,
-    dayFlag: calculateTOD(events[0].watchTimestamp),
-    yearWeek: calculateYearWeek(events[0].watchTimestamp),
+    watchTimestamp: firstTimestamp,
+    dayFlag: calculateTOD(firstTimestamp),
+    yearWeek: calculateYearWeek(firstTimestamp),
     abandonFlag: calculateDuration(req.body.events)
   };
   AbandonedTotal.addToTable(dbData);
