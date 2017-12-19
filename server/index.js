@@ -15,10 +15,13 @@ const AbandonedTotal = require('../database/AbandonedTotal.js');
 const app = express();
 
 // Setup winston to link to elasticsearch
-const esTransportOpts = {
-  level: 'info'
-};
-winston.add(winston.transports.Elasticsearch, esTransportOpts);
+app.use(expressWinston.logger({
+  transports: [
+    new Elasticsearch({
+      level: 'info'
+    })
+  ]
+}));
 
 // bodyParser setup
 app.use(bodyParser.urlencoded({ extended: false }));
