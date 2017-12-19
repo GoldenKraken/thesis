@@ -1,5 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const winston = require('winston');
+// Elasticsearch needs to be downloaded to the main directory of this service, but will be gitignored
+// to keep filesize small
+const Elasticsearch = require('winston-elasticsearch');
+const expressWinston = require('express-winston');
 
 const db = require('../database/index.js');
 const calculateDuration = require('../calculator/viewCalculator.js');
@@ -8,6 +13,12 @@ const calculateYearWeek = require('../calculator/yearWeekCalculator.js');
 const AbandonedTotal = require('../database/AbandonedTotal.js');
 
 const app = express();
+
+// Setup winston to link to elasticsearch
+const esTransportOpts = {
+  level: 'info'
+};
+winston.add(winston.transports.Elasticsearch, esTransportOpts);
 
 // bodyParser setup
 app.use(bodyParser.urlencoded({ extended: false }));
