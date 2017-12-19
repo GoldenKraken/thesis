@@ -85,42 +85,44 @@ var calculateDuration = (instance) => {
   return duration / 1000;
 };
 
-var testObj = {
-  events: [
-    {
-      videoId: 12345,
-      viewInstanceId: 92374985,
-      eventAction: 'SCRUB',
-      event_timestamp: '2017-12-08 23:29:31+00:00'
-    },
-    {
-      videoId: 12345,
-      viewInstanceId: 92374985,
-      eventAction: 'PLAY',
-      event_timestamp: '2017-12-08 23:28:31+00:00'
-    },
-    {
-      videoId: 12345,
-      viewInstanceId: 92374985,
-      eventAction: 'PLAY',
-      event_timestamp: '2017-12-08 23:34:31+00:00'
-    },
-    {
-      videoId: 12345,
-      viewInstanceId: 92374985,
-      eventAction: 'END',
-      event_timestamp: '2017-12-08 23:38:31+00:00'
-    },
-    {
-      videoId: 12345,
-      viewInstanceId: 92374985,
-      eventAction: 'PAUSE',
-      event_timestamp: '2017-12-08 23:33:31+00:00'
-    }
-  ]
-};
+module.exports = calculateDuration;
 
-calculateDuration(testObj);
+// var testObj = {
+//   events: [
+//     {
+//       videoId: 12345,
+//       viewInstanceId: 92374985,
+//       eventAction: 'SCRUB',
+//       event_timestamp: '2017-12-08 23:29:31+00:00'
+//     },
+//     {
+//       videoId: 12345,
+//       viewInstanceId: 92374985,
+//       eventAction: 'PLAY',
+//       event_timestamp: '2017-12-08 23:28:31+00:00'
+//     },
+//     {
+//       videoId: 12345,
+//       viewInstanceId: 92374985,
+//       eventAction: 'PLAY',
+//       event_timestamp: '2017-12-08 23:34:31+00:00'
+//     },
+//     {
+//       videoId: 12345,
+//       viewInstanceId: 92374985,
+//       eventAction: 'END',
+//       event_timestamp: '2017-12-08 23:38:31+00:00'
+//     },
+//     {
+//       videoId: 12345,
+//       viewInstanceId: 92374985,
+//       eventAction: 'PAUSE',
+//       event_timestamp: '2017-12-08 23:33:31+00:00'
+//     }
+//   ]
+// };
+
+// calculateDuration(testObj);
 
 
 

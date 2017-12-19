@@ -12,4 +12,10 @@ const abandonedTotalSchema = new mongoose.Schema({
 
 const AbandonedTotal = mongoose.model('AbandonedTotal', abandonedTotalSchema);
 
-module.exports = AbandonedTotal;
+const addToTable = (obj) => {
+  AbandonedTotal.create(obj, function(err) {
+    if (err) { console.log('ERROR: ', err); }
+  });
+};
+
+module.exports.addToTable = addToTable;
