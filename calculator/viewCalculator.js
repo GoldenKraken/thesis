@@ -120,7 +120,7 @@ module.exports = calculateDuration;
 //   ]
 // };
 
-// calculateDuration(testObj);
+// calculateDuration(testObj.events);
 
 
 
