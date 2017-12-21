@@ -34,7 +34,10 @@ app.get('/', (req, res) => {
 
 // post route for incoming event packages (route name pending consensus with Event service)
 app.post('/view', (req, res) => {
-  var events = req.body.events;
+  var events = JSON.parse(req.body.body).events;
+  // video length is retrieved from video inventory when each package is received
+  // currently just a placeholder
+  var videoLength = 600;
   var firstTimestamp = events[0].event_timestamp;
   var dbData = {
     viewInstanceId: events[0].viewInstanceId,
@@ -42,10 +45,10 @@ app.post('/view', (req, res) => {
     watchTimestamp: firstTimestamp,
     dayFlag: calculateTOD(firstTimestamp),
     yearWeek: calculateYearWeek(firstTimestamp),
-    abandonFlag: calculateDuration(req.body.events)
+    abandonFlag: Math.floor(calculateDuration(events) / (videoLength * (3 / 4)))
   };
-  AbandonedTotal.addToTable(dbData);
   res.send('data accepted');
+  AbandonedTotal.addToTable(dbData);
 });
 
 const port = 1337;
