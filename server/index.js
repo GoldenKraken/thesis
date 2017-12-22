@@ -34,7 +34,9 @@ app.get('/', (req, res) => {
 
 // post route for incoming event packages (route name pending consensus with Event service)
 app.post('/view', (req, res) => {
-  var events = JSON.parse(req.body.body).events;
+  // use this if load testing with artillery
+  // var events = JSON.parse(req.body.body).events;
+  var events = req.body.events;
   // video length is retrieved from video inventory when each package is received
   // currently just a placeholder
   var videoLength = 600;
@@ -56,3 +58,5 @@ const port = 1337;
 app.listen(port, () => {
   console.log(`App listening on port ${port}!`);
 });
+
+module.exports = app;
