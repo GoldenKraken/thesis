@@ -65,13 +65,48 @@ app.post('/view', (req, res) => {
   var events = JSON.parse(req.body.body).events;
   // will replace fake route with actual location of video inventory service once ready for deployment
   res.send('data accepted');
-  axios.get('http://localhost:1337/vidLengthTest', {
-    params: {
-      videoId: events[0].videoId
-    }
-  })
-    .then(function(res) {
-      calculateAll(res);
+  client.getAsync(events[0].videoId.toString())
+    .then((duration) => {
+      if (duration === 'nil') {
+        axios.get('http://localhost:1337/vidLengthTest', {
+          params: {
+            videoId: events[0].videoId
+          }
+        })
+          .then(function(res) {
+            var videoLength = res.duration;
+            var firstTimestamp = events[0].event_timestamp;
+            var dbData = {
+              viewInstanceId: events[0].viewInstanceId,
+              videoId: events[0].videoId,
+              watchTimestamp: firstTimestamp,
+              dayFlag: calculateTOD(firstTimestamp),
+              yearWeek: calculateYearWeek(firstTimestamp),
+              abandonFlag: Math.floor(calculateDuration(events) / (videoLength * (3 / 4)))
+            };
+            AbandonedTotal.addToTable(dbData);
+            return res;
+          })
+          .then(function(res) {
+            return client.setAsync(res.video_id.toString(), res.duration.toString());
+          })
+          .then(function() {
+            console.log('Video logged in redis.');
+          });
+      } else {
+        var res = { duration: Number(duration) };
+        var videoLength = res.duration;
+        var firstTimestamp = events[0].event_timestamp;
+        var dbData = {
+          viewInstanceId: events[0].viewInstanceId,
+          videoId: events[0].videoId,
+          watchTimestamp: firstTimestamp,
+          dayFlag: calculateTOD(firstTimestamp),
+          yearWeek: calculateYearWeek(firstTimestamp),
+          abandonFlag: Math.floor(calculateDuration(events) / (videoLength * (3 / 4)))
+        };
+        AbandonedTotal.addToTable(dbData);
+      }
     });
 });
 
