@@ -4,11 +4,14 @@
   "description": "The project description",
   "main": ".eslintrc.js",
   "dependencies": {
+    "axios": "^0.17.1",
+    "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "express-winston": "^2.4.0",
     "fs": "0.0.1-security",
     "mongoose": "^4.13.7",
+    "redis": "^2.8.0",
     "winston": "^2.4.0",
     "winston-elasticsearch": "^0.5.5"
   },
