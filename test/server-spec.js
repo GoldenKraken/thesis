@@ -43,10 +43,8 @@ describe('Calculation Process', () => {
     it('Calculates duration correctly', (done) => {
       db.AbandonedTotal.findOne({viewInstanceId: 92374985})
         .then((obj) => {
-          console.log('Test object is: ', obj);
-          console.log('Timestamp is: ', JSON.stringify(obj.watchTimestamp));
           expect(obj.dayFlag).to.equal(true);
-          expect(obj.abandonFlag).to.equal(false);
+          expect(obj.abandonFlag).to.equal(true);
           expect(JSON.stringify(obj.watchTimestamp)).to.equal('"2017-12-08T23:28:31.000Z"');
           expect(obj.yearWeek).to.equal('2017-49');
           done();

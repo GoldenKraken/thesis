@@ -47,7 +47,11 @@ app.get('/', (req, res) => {
 // post route for incoming event packages (route name pending consensus with Event service)
 app.post('/view', (req, res) => {
   // events object needs to change depending on whether or not its being tested with artillery
-  var events = JSON.parse(req.body.body).events;
+  // use this with artillery
+  //var events = JSON.parse(req.body.body).events;
+
+  // use this during unit tests and deployment
+  var events = req.body.events;
   // will replace fake route with actual location of video inventory service once ready for deployment
   res.send('data accepted');
   client.getAsync(events[0].videoId.toString())
