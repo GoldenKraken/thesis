@@ -29,7 +29,8 @@ describe('Calculation Process', () => {
         done();
       });
   });
-  describe('View Route, Calculation, and Database Writing', () => {
+  //View Route currently deprecated due to use of SQS, below tests not able to be run
+  xdescribe('View Route, Calculation, and Database Writing', () => {
     it('Responds with 200', (done) => {
       supertest(app)
         .post('/view')

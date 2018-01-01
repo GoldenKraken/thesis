@@ -12,6 +12,7 @@
     "fs": "0.0.1-security",
     "mongoose": "^4.13.7",
     "redis": "^2.8.0",
+    "sqs-consumer": "^3.8.0",
     "winston": "^2.4.0",
     "winston-elasticsearch": "^0.5.5"
   },
