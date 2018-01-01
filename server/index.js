@@ -11,17 +11,26 @@ const bluebird = require('bluebird');
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
 
+const AWS = require('aws-sdk');
+const Consumer = require('sqs-consumer');
+const awsKeys = require('aws-keys/awsKeys.js');
+
 const db = require('../database/index.js');
 const calculateDuration = require('../calculator/viewCalculator.js');
 const calculateTOD = require('../calculator/dayNightCalculator.js');
 const calculateYearWeek = require('../calculator/yearWeekCalculator.js');
 const AbandonedTotal = require('../database/AbandonedTotal.js');
 
-const Consumer = require('sqs-consumer');
-
 const client = redis.createClient();
 
 const app = express();
+
+// AWS setup
+AWS.config.update({
+  region: 'us-west-1',
+  accessKeyId: awsKeys.accessKeyId,
+  secretAccessKey: awsKeys.secretAccessKey
+});
 
 // redis setup
 client.on('error', (error) => {
@@ -93,7 +102,8 @@ const consumerApp = Consumer.create({
         }
       });
     done();
-  }
+  },
+  sqs: new AWS.SQS()
 });
 
 consumerApp.on('error', (err) => {
