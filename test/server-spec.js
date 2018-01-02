@@ -13,6 +13,12 @@ const db = require('../database/AbandonedTotal.js');
 mongoose.connect('mongodb://localhost/abandonment_calculator', { useMongoClient: true });
 const app = require('../server/index.js');
 
+var currCount;
+db.AbandonedTotal.count()
+  .then((count) => {
+    currCount = count;
+  });
+
 describe('Calculation Process', () => {
   after(function(done) {
     this.timeout(0);
@@ -23,7 +29,7 @@ describe('Calculation Process', () => {
         done();
       });
   });
-  describe('View Route', () => {
+  describe('View Route, Calculation, and Database Writing', () => {
     it('Responds with 200', (done) => {
       supertest(app)
         .post('/view')
@@ -31,12 +37,10 @@ describe('Calculation Process', () => {
         .send('{"events":[{"videoId":12345,"viewInstanceId":92374985,"eventAction":"PLAY","event_timestamp":"2017-12-08 23:28:31+00:00"},{"videoId":12345,"viewInstanceId":92374985,"eventAction":"PAUSE","event_timestamp":"2017-12-08 23:33:31+00:00"},{"videoId":12345,"viewInstanceId":92374985,"eventAction":"END","event_timestamp":"2017-12-08 23:38:31+00:00"}]}')
         .expect(200, done);
     });
-  });
-  describe('Calculation and Database Writing', (done) => {
     it('Adds one file to the database', (done) => {
       db.AbandonedTotal.count()
         .then((count) => {
-          expect(count).to.equal(10000001);
+          expect(count).to.equal(currCount + 1);
           done();
         });
     });
