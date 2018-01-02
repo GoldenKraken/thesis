@@ -44,25 +44,16 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-// create function to calculate data and add row to table
-var calculateAll = (res) => {
-  var videoLength = res.duration;
-  var firstTimestamp = events[0].event_timestamp;
-  var dbData = {
-    viewInstanceId: events[0].viewInstanceId,
-    videoId: events[0].videoId,
-    watchTimestamp: firstTimestamp,
-    dayFlag: calculateTOD(firstTimestamp),
-    yearWeek: calculateYearWeek(firstTimestamp),
-    abandonFlag: Math.floor(calculateDuration(events) / (videoLength * (3 / 4)))
-  };
-  AbandonedTotal.addToTable(dbData);
-};
-
 // post route for incoming event packages (route name pending consensus with Event service)
 app.post('/view', (req, res) => {
   // events object needs to change depending on whether or not its being tested with artillery
-  var events = JSON.parse(req.body.body).events;
+
+  // use this with artillery
+  //var events = JSON.parse(req.body.body).events;
+
+  // use this during unit tests and deployment
+  var events = req.body.events;
+  
   // will replace fake route with actual location of video inventory service once ready for deployment
   res.send('data accepted');
   client.getAsync(events[0].videoId.toString())
@@ -119,3 +110,5 @@ const port = 1337;
 app.listen(port, () => {
   console.log(`App listening on port ${port}!`);
 });
+
+module.exports = app;

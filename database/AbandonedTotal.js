@@ -18,4 +18,5 @@ const addToTable = (obj) => {
   });
 };
 
+module.exports.AbandonedTotal = AbandonedTotal;
 module.exports.addToTable = addToTable;
