@@ -13,7 +13,7 @@ bluebird.promisifyAll(redis.Multi.prototype);
 
 const AWS = require('aws-sdk');
 const Consumer = require('sqs-consumer');
-const awsKeys = require('aws-keys/awsKeys.js');
+const awsKeys = require('../aws-keys/awsKeys.js');
 
 const db = require('../database/index.js');
 const calculateDuration = require('../calculator/viewCalculator.js');
@@ -56,9 +56,11 @@ app.get('/', (req, res) => {
 });
 
 const consumerApp = Consumer.create({
-  queueUrl: '////insert url here////',
+  queueUrl: 'https://sqs.us-east-2.amazonaws.com/331983685977/packaged-events',
   handleMessage: (message, done) => {
-    var events = JSON.parse(message);
+    console.log('Message being handled...');
+    var events = JSON.parse(message.Body).Events;
+    console.log('MESSAGE EVENTS IS: ', events);
     client.getAsync(events[0].videoId.toString())
       .then((duration) => {
         if (duration === 'nil') {
@@ -101,6 +103,7 @@ const consumerApp = Consumer.create({
           AbandonedTotal.addToTable(dbData);
         }
       });
+    console.log('Done');
     done();
   },
   sqs: new AWS.SQS()
