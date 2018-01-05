@@ -13,7 +13,6 @@ bluebird.promisifyAll(redis.Multi.prototype);
 
 const AWS = require('aws-sdk');
 const Consumer = require('sqs-consumer');
-const awsKeys = require('../aws-keys/awsKeys.js');
 
 const db = require('../database/index.js');
 const calculateDuration = require('../calculator/viewCalculator.js');
@@ -26,10 +25,9 @@ const client = redis.createClient();
 const app = express();
 
 // AWS setup
+// Keys set up by using AWS CLI and running 'aws configure' command in terminal
 AWS.config.update({
-  region: 'us-west-1',
-  accessKeyId: awsKeys.accessKeyId,
-  secretAccessKey: awsKeys.secretAccessKey
+  region: 'us-west-1'
 });
 
 // redis setup
@@ -116,64 +114,66 @@ consumerApp.on('error', (err) => {
 app.get('/vidLengthTest', (req, res) => {
   res.send(JSON.stringify({ duration: 600 }));
 });
+
 // Deprecated post route from before sqs setup. Commented for posterity
-
+/*
 // post route for incoming event packages (route name pending consensus with Event service)
-// app.post('/view', (req, res) => {
-//   // events object needs to change depending on whether or not its being tested with artillery
+app.post('/view', (req, res) => {
+  // events object needs to change depending on whether or not its being tested with artillery
 
-//   // use this with artillery
-//   //var events = JSON.parse(req.body.body).events;
+  // use this with artillery
+  var events = JSON.parse(req.body.body).events;
 
-//   // use this during unit tests and deployment
-//   var events = req.body.events;
+  // use this during unit tests and deployment
+  // var events = req.body.events;
 
-//   // will replace fake route with actual location of video inventory service once ready for deployment
-//   res.send('data accepted');
-//   client.getAsync(events[0].videoId.toString())
-//     .then((duration) => {
-//       if (duration === 'nil') {
-//         axios.get('http://localhost:1337/vidLengthTest', {
-//           params: {
-//             videoId: events[0].videoId
-//           }
-//         })
-//           .then(function(res) {
-//             var videoLength = res.duration;
-//             var firstTimestamp = events[0].event_timestamp;
-//             var dbData = {
-//               viewInstanceId: events[0].viewInstanceId,
-//               videoId: events[0].videoId,
-//               watchTimestamp: firstTimestamp,
-//               dayFlag: calculateTOD(firstTimestamp),
-//               yearWeek: calculateYearWeek(firstTimestamp),
-//               abandonFlag: Math.floor(calculateDuration(events) / (videoLength * (3 / 4)))
-//             };
-//             AbandonedTotal.addToTable(dbData);
-//             return res;
-//           })
-//           .then(function(res) {
-//             return client.setAsync(res.video_id.toString(), res.duration.toString());
-//           })
-//           .then(function() {
-//             console.log('Video logged in redis.');
-//           });
-//       } else {
-//         var res = { duration: Number(duration) };
-//         var videoLength = res.duration;
-//         var firstTimestamp = events[0].event_timestamp;
-//         var dbData = {
-//           viewInstanceId: events[0].viewInstanceId,
-//           videoId: events[0].videoId,
-//           watchTimestamp: firstTimestamp,
-//           dayFlag: calculateTOD(firstTimestamp),
-//           yearWeek: calculateYearWeek(firstTimestamp),
-//           abandonFlag: Math.floor(calculateDuration(events) / (videoLength * (3 / 4)))
-//         };
-//         AbandonedTotal.addToTable(dbData);
-//       }
-//     });
-// });
+  // will replace fake route with actual location of video inventory service once ready for deployment
+  res.send('data accepted');
+  client.getAsync(events[0].videoId.toString())
+    .then((duration) => {
+      if (duration === 'nil') {
+        axios.get('http://localhost:1337/vidLengthTest', {
+          params: {
+            videoId: events[0].videoId
+          }
+        })
+          .then(function(res) {
+            var videoLength = res.duration;
+            var firstTimestamp = events[0].event_timestamp;
+            var dbData = {
+              viewInstanceId: events[0].viewInstanceId,
+              videoId: events[0].videoId,
+              watchTimestamp: firstTimestamp,
+              dayFlag: calculateTOD(firstTimestamp),
+              yearWeek: calculateYearWeek(firstTimestamp),
+              abandonFlag: Math.floor(calculateDuration(events) / (videoLength * (3 / 4)))
+            };
+            AbandonedTotal.addToTable(dbData);
+            return res;
+          })
+          .then(function(res) {
+            return client.setAsync(res.video_id.toString(), res.duration.toString());
+          })
+          .then(function() {
+            console.log('Video logged in redis.');
+          });
+      } else {
+        var res = { duration: Number(duration) };
+        var videoLength = res.duration;
+        var firstTimestamp = events[0].event_timestamp;
+        var dbData = {
+          viewInstanceId: events[0].viewInstanceId,
+          videoId: events[0].videoId,
+          watchTimestamp: firstTimestamp,
+          dayFlag: calculateTOD(firstTimestamp),
+          yearWeek: calculateYearWeek(firstTimestamp),
+          abandonFlag: Math.floor(calculateDuration(events) / (videoLength * (3 / 4)))
+        };
+        AbandonedTotal.addToTable(dbData);
+      }
+    });
+});
+*/
 
 const port = 1337;
 

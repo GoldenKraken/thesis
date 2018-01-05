@@ -63,15 +63,18 @@ var calculateDuration = (events) => {
   for (var k = 0; k < orderedInstance.length - 1; k++) {
     var currEvent = orderedInstance[k];
     var nextEvent = orderedInstance[k + 1];
+    var eventAction = currEvent.eventAction;
+    var nextTimestamp = new Date(nextEvent.event_timestamp);
+    var currTimestamp = new Date(currEvent.event_timestamp);
     if (k > 0) {
-      if (currEvent.eventAction === 'REWIND' || currEvent.eventAction === 'FASTFWD' || currEvent.eventAction === 'SCRUB') {
+      if (eventAction === 'REWIND' || eventAction === 'FASTFWD' || eventAction === 'SCRUB') {
         if (playOrPause === 'PLAY') {
-          duration = duration + (new Date(nextEvent.event_timestamp) - new Date(currEvent.event_timestamp));
+          duration = duration + nextTimestamp - currTimestamp;
         }
       }
     }
     if (currEvent.eventAction === 'PLAY') {
-      duration = duration + (new Date(nextEvent.event_timestamp) - new Date(currEvent.event_timestamp));
+      duration = duration + nextTimestamp - currTimestamp;
       playOrPause = 'PLAY';
     }
     if (currEvent.eventAction === 'PAUSE') {
